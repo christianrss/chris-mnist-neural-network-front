@@ -5,14 +5,20 @@ function PreviewTestImages() {
 
     useEffect(() => {
 
-        fetch("/mnist/test-data.json")
+        fetch("/mnist/test-data-0.json")
             .then(response => response.json())
             .then(data => setMnistData(data));
     }, []);
 
+    const createImageUrl = (inputs) => {
+        console.log(inputs);
+    }
+
     if (!mnistData) {
         return <div>Loading...</div>
     }
+
+    const {inputs, labels} = mnistData;
 
     return (
         <>
@@ -21,8 +27,15 @@ function PreviewTestImages() {
                     Mnist Test Images
                 </div>
                 <div className="page-content">
-                    <div className="image">
-                        {JSON.stringify(mnistData.labels)}
+                    <div className="images">
+                        {inputs.map((input, index) => (
+                            <div>
+                                <div key={index} className="image-container">
+                                    <img src={createImageUrl(input)} alt={`Digit ${labels[index]}`}/>
+                                    <p>Label: {labels[index]}, Idx: {index}</p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
