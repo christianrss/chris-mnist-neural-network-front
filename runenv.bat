@@ -1,0 +1,1 @@
+docker run -it -p 3000:3000 -v %cd%:/app chris-nn-front-env
