@@ -114,7 +114,19 @@ function ImagePrediction() {
         const input = preprocessCanvas();
         const misclassifiedData = {input, label};
 
-        console.log("saving: " + misclassifiedData);
+        fetch("http://localhost:3001/save-misclassified",  {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(misclassifiedData)
+        })
+        .then(data => {
+            
+            clearCanvas();
+            alert("Saved Successfuly!");
+        })
+        .catch(error => console.error("Error saving data: " + error));
     };
 
     return (
