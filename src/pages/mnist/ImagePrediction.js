@@ -69,6 +69,8 @@ function ImagePrediction() {
         };
     }, []);
 
+    const normalizeData = (pixel) => pixel / 255.0;
+
     const preprocessCanvas = () => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
@@ -76,7 +78,7 @@ function ImagePrediction() {
         const grayScaleData = [];
 
         for (let i = 0; i < imageData.data.length; i += 4) {
-            grayScaleData.push(imageData.data[i]);
+            grayScaleData.push(normalizeData(imageData.data[i]));
         }
 
         return grayScaleData;
