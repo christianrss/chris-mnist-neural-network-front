@@ -78,7 +78,7 @@ function ImagePrediction() {
         const grayScaleData = [];
 
         for (let i = 0; i < imageData.data.length; i += 4) {
-            grayScaleData.push(normalizeData(imageData.data[i]));
+            grayScaleData.push(imageData.data[i]);
         }
 
         return grayScaleData;
@@ -89,7 +89,7 @@ function ImagePrediction() {
     };
 
     const predict = () => {
-        const inputs = preprocessCanvas();
+        const inputs = preprocessCanvas().map(pixel => normalizeData(pixel));
         let sum = binaryModel.bias;
 
         binaryModel.weights.forEach((weight, i) => {
@@ -108,6 +108,13 @@ function ImagePrediction() {
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, WIDTH, HEIGHT);
         setPrediction(null);
+    };
+
+    const saveToTrainingSet = (label) => {
+        const input = preprocessCanvas();
+        const misclassifiedData = {input, label};
+
+        console.log("saving: " + misclassifiedData);
     };
 
     return (
@@ -130,6 +137,10 @@ function ImagePrediction() {
                 prediction != null &&
                 <div>
                     Prediction: {prediction === 1 ? "Number is Zero" : "Number is 1 - 9"}
+                    <div style={{marginTop: 20}}>
+                        <button onClick={() => saveToTrainingSet(1)}>Save - LABEL 1</button>
+                        <button onClick={() => saveToTrainingSet(1)}>Save - LABEL 0</button>
+                    </div>
                 </div>
             }
         </div>
